@@ -971,8 +971,8 @@ FixedwingAttitudeControl::task_main()
 				if (_vcontrol_mode.flag_control_auto_enabled ||
 				    !_vcontrol_mode.flag_control_manual_enabled) {
 					/* read in attitude setpoint from attitude setpoint uorb topic */
-					roll_sp = _att_sp.roll_body + _parameters.rollsp_offset_rad;
-					pitch_sp = _att_sp.pitch_body + _parameters.pitchsp_offset_rad;
+					roll_sp = _att_sp.roll_body;
+					pitch_sp = _att_sp.pitch_body;
 					yaw_sp = _att_sp.yaw_body;
 					throttle_sp = _att_sp.thrust;
 
@@ -995,15 +995,9 @@ FixedwingAttitudeControl::task_main()
 					/* the pilot does not want to change direction,
 					 * take straight attitude setpoint from position controller
 					 */
-					if (fabsf(_manual.y) < 0.01f && fabsf(_roll) < 0.2f) {
-						roll_sp = _att_sp.roll_body + _parameters.rollsp_offset_rad;
+					roll_sp = _att_sp.roll_body;
 
-					} else {
-						roll_sp = (_manual.y * _parameters.man_roll_max)
-							  + _parameters.rollsp_offset_rad;
-					}
-
-					pitch_sp = _att_sp.pitch_body + _parameters.pitchsp_offset_rad;
+					pitch_sp = _att_sp.pitch_body;
 					throttle_sp = _att_sp.thrust;
 
 					/* reset integrals where needed */
@@ -1024,8 +1018,8 @@ FixedwingAttitudeControl::task_main()
 					/*
 					 * Velocity should be controlled and manual is enabled.
 					*/
-					roll_sp = (_manual.y * _parameters.man_roll_max) + _parameters.rollsp_offset_rad;
-					pitch_sp = _att_sp.pitch_body + _parameters.pitchsp_offset_rad;
+					roll_sp = _att_sp.roll_body;
+					pitch_sp = _att_sp.pitch_body;
 					throttle_sp = _att_sp.thrust;
 
 					/* reset integrals where needed */
